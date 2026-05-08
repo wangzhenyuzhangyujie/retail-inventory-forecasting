@@ -1,48 +1,43 @@
-# Retail Inventory Forecasting for Replenishment Optimization
+# 零售需求预测与库存补货优化
 
-This repository contains the code, experiment outputs, and report materials for a
-graduate course project on retail demand forecasting and inventory
-replenishment.
+本仓库是研究生《高级机器学习理论》课程报告项目的公开代码与实验材料，包含实验代码、配置文件、已生成的结果表、结果图和报告相关文档。
 
-The project studies one question:
+项目研究的问题是：
 
 ```text
-Does a lower sales forecasting error necessarily imply lower inventory cost?
+更低的销量预测误差，是否一定带来更低的库存成本？
 ```
 
-The main proposed method is:
+本文提出并验证的方法是：
 
 ```text
-Protection-period quantile forecasting
-+ cost-aware critical-quantile calibration
-+ rolling periodic-review inventory simulation
+保护期需求分位数预测
++ 成本感知的关键分位数校准
++ 滚动周期补货库存仿真
 ```
 
-The experiments follow three layers:
+实验按课程报告要求设计为三层：
 
-1. Classical algorithms on synthetic retail demand regimes.
-2. Extended GBDT/quantile baselines on real competition datasets.
-3. The proposed forecast-to-decision calibration method with ablation and
-   sensitivity analysis.
+1. 使用经典基础算法解决合成零售需求仿真问题。
+2. 在真实竞赛数据集上建立 GBDT / 分位数预测扩展基线。
+3. 提出面向预测到决策转换的成本感知校准方法，并进行消融和敏感性分析。
 
-## Repository Structure
+## 仓库结构
 
 ```text
 retail_inventory_forecasting/
-  configs/                 # experiment configuration
-  data/                    # data instructions; raw data is not tracked by git
-  experiments/             # runnable experiment entry points
-  outputs/                 # generated tables and figures used by the report
-  reports/                 # report draft, audit notes, and experiment notes
-  src/retail_inventory/    # data, feature, model, inventory, and evaluation code
-  requirements.txt
+  configs/                 # 实验配置
+  data/                    # 数据准备说明；原始大数据不进入 git
+  experiments/             # 可直接运行的实验入口
+  outputs/                 # 报告使用的结果表和图片
+  reports/                 # 报告草稿、代码审计和实验说明
+  src/retail_inventory/    # 数据、特征、模型、库存仿真和评价代码
+  requirements.txt         # Python 依赖
 ```
 
-## Environment
+## 环境配置
 
-The experiments were run with Python 3.7. A newer Python 3.x environment may
-also work, but the submitted results should be reproduced with the dependency
-set below.
+实验环境为 Python 3.7。更高版本的 Python 3.x 通常也可以运行，但为了复现报告结果，建议使用下面的依赖配置。
 
 ```bash
 python -m venv .venv
@@ -50,7 +45,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Quick dependency check:
+依赖导入检查：
 
 ```bash
 python - <<'PY'
@@ -60,11 +55,11 @@ print("imports_ok")
 PY
 ```
 
-## Data
+## 数据准备
 
-Raw competition data is intentionally not tracked in git.
+原始竞赛数据没有直接提交到 git 仓库中。原因是 M5 的主要 CSV 文件超过 GitHub 普通仓库的单文件大小限制，而 Store Item 数据由 Kaggle 分发。
 
-Expected local layout:
+本项目期望的数据目录如下：
 
 ```text
 data/raw/m5/
@@ -78,14 +73,13 @@ data/raw/store_item/
   sample_submission.csv
 ```
 
-M5 can be downloaded with the included script:
+M5 数据可以用仓库自带脚本下载：
 
 ```bash
 python experiments/download_m5.py
 ```
 
-For this course submission, the M5 raw files are also published as a GitHub
-Release asset:
+本课程提交版本也在 GitHub Release 中提供了 M5 原始数据压缩包：
 
 ```bash
 gh release download v1.0-course-submission \
@@ -94,19 +88,17 @@ gh release download v1.0-course-submission \
 unzip -o m5_raw_data.zip -d data/raw/m5
 ```
 
-Store Item Demand Forecasting Challenge data should be downloaded from Kaggle
-and placed under `data/raw/store_item/`:
+Store Item Demand Forecasting Challenge 数据请从 Kaggle 官方页面下载，并放入 `data/raw/store_item/`：
 
 ```text
 https://www.kaggle.com/competitions/demand-forecasting-kernels-only/data
 ```
 
-See [data/README.md](data/README.md) for details and licensing notes.
+更详细的数据来源和许可说明见 [data/README.md](data/README.md)。
 
-## Smoke Tests
+## 快速检查
 
-These checks validate the public entry points without running the full
-experiment suite:
+下面的命令只检查实验入口是否可调用，不会运行完整实验：
 
 ```bash
 python experiments/run_layer1_synthetic.py --help
@@ -114,15 +106,15 @@ python experiments/run_m5_full.py --help
 python experiments/run_store_item_full.py --help
 ```
 
-Run a quick M5 sample after preparing the M5 raw files:
+准备好 M5 原始数据后，可以运行一个小样本 smoke test：
 
 ```bash
 python experiments/run_m5_full.py --config configs/default.yaml --n-series 10
 ```
 
-## Full Reproduction Commands
+## 完整复现实验
 
-Run the experiments used by the report:
+运行报告中使用的主要实验：
 
 ```bash
 python experiments/run_layer1_synthetic.py --config configs/default.yaml
@@ -133,41 +125,46 @@ python experiments/run_ablation.py --dataset m5 --n-series 1000
 python experiments/run_sensitivity.py --dataset m5 --n-series 1000
 ```
 
-`experiments/run_all.py` runs the synthetic, M5 main, M5 ablation, and M5
-sensitivity experiments. Store Item is separate because it requires manual
-Kaggle data preparation.
+`experiments/run_all.py` 会运行 synthetic、M5 主实验、M5 消融实验和 M5 敏感性分析。Store Item 实验需要先手动准备 Kaggle 数据，因此单独运行。
 
-Outputs are written to:
+实验输出保存到：
 
 ```text
 outputs/tables/
 outputs/figures/
 ```
 
-## Main Report Results
+## 报告主要结果
 
-The submitted report uses the generated files already included under
-`outputs/`.
+课程报告使用的结果文件已经包含在 `outputs/` 中，老师可以直接查看，也可以按上面的命令重新运行。
 
-| Dataset | Baseline | Proposed method | Relative total-cost reduction |
+| 数据集 | 固定分位数基线成本 | 提出方法成本 | 总库存成本相对下降 |
 |---|---:|---:|---:|
-| M5 subset, 1000 bottom-level SKU-store series | 1009.83 | 959.11 | 5.02% |
-| Store Item, 500 store-item series | 15726.16 | 15529.37 | 1.25% |
+| M5 子集，1000 条 bottom-level SKU-store 序列 | 1009.83 | 959.11 | 5.02% |
+| Store Item，全量 500 条 store-item 序列 | 15726.16 | 15529.37 | 1.25% |
 
-The M5 ablation shows that removing adaptive critical-quantile calibration
-makes the proposed method collapse back to the fixed-quantile baseline.
+M5 消融实验表明，去掉自适应 critical-quantile 校准后，提出方法会退化为固定分位数基线，说明收益来自成本感知的补货分位数校准，而不是结果表命名或后处理差异。
 
-## Evaluation Setting
+## 评价设置说明
 
-The project uses local rolling-origin replenishment simulation. It does not
-claim official Kaggle leaderboard participation or hidden-test ranking.
+本项目使用本地 rolling-origin 补货仿真，不声称参加 Kaggle 官方 hidden-test leaderboard，也不声称取得官方排名。
 
-At each review date, the simulator assumes demand observed up to that date is
-available. Test labels are used only for final metrics and inventory simulation.
-See [reports/code_leakage_audit.md](reports/code_leakage_audit.md) for the code
-leakage audit and remaining rigor notes.
+在每个补货检查点，实验假设此前已经发生并观测到的销量可以作为历史信息。测试标签只用于最终预测指标和库存仿真评价，不参与模型训练。代码泄漏检查和剩余严谨性说明见 [reports/code_leakage_audit.md](reports/code_leakage_audit.md)。
 
-## License
+## 公开链接
 
-Code in this repository is released under the MIT License. Dataset rights and
-licenses remain with the original data providers.
+项目代码：
+
+```text
+https://github.com/wangzhenyuzhangyujie/retail-inventory-forecasting
+```
+
+M5 数据 Release：
+
+```text
+https://github.com/wangzhenyuzhangyujie/retail-inventory-forecasting/releases/tag/v1.0-course-submission
+```
+
+## 许可
+
+本仓库代码采用 MIT License。数据版权和许可归原始数据提供方所有。

@@ -1,9 +1,10 @@
-# Data Preparation
+# 数据准备说明
 
-Raw data is not tracked in git because the main M5 CSV files exceed the normal
-GitHub repository file-size limit and Store Item is distributed through Kaggle.
+原始数据不直接提交到 git 仓库。原因是 M5 的主要 CSV 文件超过 GitHub 普通仓库的单文件大小限制，而 Store Item 数据由 Kaggle 竞赛页面分发。
 
-## Expected Layout
+## 目录结构
+
+请将数据放置为下面的结构：
 
 ```text
 data/raw/m5/
@@ -17,17 +18,15 @@ data/raw/store_item/
   sample_submission.csv
 ```
 
-## M5
+## M5 数据
 
-The project uses the M5 Forecasting Walmart retail data. The raw files can be
-downloaded through the included helper:
+本项目使用 M5 Forecasting 的 Walmart 零售日销量数据。可以通过项目自带脚本下载：
 
 ```bash
 python experiments/download_m5.py
 ```
 
-For the course submission, the same three raw M5 files are also attached to the
-GitHub Release `v1.0-course-submission` as `m5_raw_data.zip`:
+为了便于课程检查，本提交也把同样的三个 M5 原始文件作为 GitHub Release 附件提供，文件名为 `m5_raw_data.zip`：
 
 ```bash
 gh release download v1.0-course-submission \
@@ -36,26 +35,30 @@ gh release download v1.0-course-submission \
 unzip -o m5_raw_data.zip -d data/raw/m5
 ```
 
-The included M5 experiment uses a deterministic sample of 1000 bottom-level
-SKU-store series rather than the full official M5 leaderboard setup.
+Release 链接：
+
+```text
+https://github.com/wangzhenyuzhangyujie/retail-inventory-forecasting/releases/tag/v1.0-course-submission
+```
+
+报告中的 M5 实验使用确定性随机种子抽取 1000 条 bottom-level SKU-store 序列，而不是完整 M5 官方 leaderboard 设置。
 
 ## Store Item Demand Forecasting Challenge
 
-Store Item data should be downloaded from Kaggle:
+Store Item 数据请从 Kaggle 官方页面下载：
 
 ```text
 https://www.kaggle.com/competitions/demand-forecasting-kernels-only/data
 ```
 
-After downloading, place `train.csv`, `test.csv`, and `sample_submission.csv`
-under `data/raw/store_item/`.
+下载后，将 `train.csv`、`test.csv`、`sample_submission.csv` 放到：
 
-The report uses the full `train.csv` panel for local rolling-origin inventory
-evaluation. It does not use the Kaggle hidden-test leaderboard.
+```text
+data/raw/store_item/
+```
 
-## Licensing Notes
+报告使用的是 `train.csv` 中的全量 500 条 store-item 序列，并在本地 rolling-origin 补货仿真中划分训练、验证和测试区间。本文没有使用 Kaggle hidden-test leaderboard 成绩。
 
-Code in this repository is MIT licensed. Dataset rights and licenses remain
-with the original providers. M5 is also available through Zenodo with CC BY 4.0
-metadata. Store Item raw files are not redistributed in this repository because
-Kaggle competition data redistribution terms should be checked before mirroring.
+## 许可说明
+
+本仓库代码采用 MIT License。数据版权和许可归原始数据提供方所有。M5 数据也可通过 Zenodo 获取，其页面元数据标注为 CC BY 4.0。Store Item 原始文件没有在本仓库或 Release 中二次分发，因为 Kaggle 竞赛数据的再分发条款需要单独确认。
