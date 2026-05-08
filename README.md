@@ -79,6 +79,8 @@ M5 数据可以用仓库自带脚本下载：
 python experiments/download_m5.py
 ```
 
+该脚本内部调用系统 `curl` 下载文件；如果运行环境没有 `curl`，请先安装 `curl`，或直接使用下面的 GitHub Release 数据包。
+
 本课程提交版本也在 GitHub Release 中提供了 M5 原始数据压缩包：
 
 ```bash
