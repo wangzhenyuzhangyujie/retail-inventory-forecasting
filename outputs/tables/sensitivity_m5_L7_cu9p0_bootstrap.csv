@@ -1,0 +1,2 @@
+baseline,candidate,mean_reduction,ci_low,ci_high
+pp_quantile_fixed,pp_quantile_calibrated,0.10778003638238243,0.09338304463055318,0.12088847667872457

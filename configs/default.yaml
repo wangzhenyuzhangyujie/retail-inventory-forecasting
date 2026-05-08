@@ -1,0 +1,55 @@
+seed: 2026
+
+data:
+  horizon: 28
+  lead_time: 7
+  review_period: 7
+  warmup_days: 28
+  m5_url_base: "https://huggingface.co/datasets/denephew/M5_Forecasting/resolve/main"
+  m5_files:
+    - calendar.csv
+    - sales_train_validation.csv
+    - sell_prices.csv
+  m5_min_last_days: 420
+
+features:
+  lags: [1, 7, 14, 28, 56]
+  rolling_windows: [7, 14, 28]
+  quantile_alphas: [0.5, 0.7, 0.8, 0.9, 0.95, 0.99]
+
+inventory:
+  holding_cost: 1.0
+  stockout_cost: 5.0
+  fixed_order_cost: 0.0
+  service_level_floor: 0.80
+  tau_epsilon: 0.12
+  initial_quantile: 0.90
+
+experiments:
+  synthetic:
+    n_series: 120
+    n_days: 420
+    test_days: 84
+  m5:
+    n_series: 1000
+    test_days: 84
+    validation_days: 56
+  bootstrap_samples: 300
+
+models:
+  gbdt:
+    n_estimators: 240
+    learning_rate: 0.05
+    max_depth: 5
+    min_samples_leaf: 20
+  lightgbm:
+    n_estimators: 450
+    learning_rate: 0.035
+    num_leaves: 64
+    min_child_samples: 40
+  calibrator:
+    epochs: 250
+    batch_size: 512
+    lr: 0.01
+    weight_decay: 0.0001
+    tau_regularization: 0.005

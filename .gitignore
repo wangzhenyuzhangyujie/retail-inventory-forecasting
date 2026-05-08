@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Notebooks and local editor state
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local raw data and archives
+data/raw/
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Local logs and temporary files
+*.log
+tmp/
+temp/

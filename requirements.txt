@@ -1,0 +1,14 @@
+numpy>=1.21
+pandas>=1.1
+scipy>=1.7
+scikit-learn>=0.19
+statsmodels>=0.12
+PyYAML>=5.0
+matplotlib>=3.3
+seaborn>=0.11
+torch>=1.13
+lightgbm>=3.3
+xgboost>=1.6
+kaggle>=1.6
+dask==2022.2.0
+distributed==2022.2.0
