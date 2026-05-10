@@ -169,4 +169,4 @@ https://github.com/wangzhenyuzhangyujie/retail-inventory-forecasting/releases/ta
 
 ## 许可
 
-本仓库代码采用 MIT License。数据版权和许可归原始数据提供方所有。
+本仓库仅作为课程作业程序包公开，代码未额外声明开源许可证。数据版权和许可归原始数据提供方所有。
