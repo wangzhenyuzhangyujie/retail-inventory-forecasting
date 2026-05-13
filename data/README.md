@@ -47,7 +47,14 @@ https://github.com/wangzhenyuzhangyujie/retail-inventory-forecasting/releases/ta
 
 ## Store Item Demand Forecasting Challenge
 
-Store Item 数据请从 Kaggle 官方页面下载：
+Store Item 数据由 Kaggle 竞赛页面分发。若本机已经配置 Kaggle API 凭据，并且账号已经接受该竞赛规则，可以运行：
+
+```bash
+pip install -r requirements-data.txt
+python experiments/download_store_item.py
+```
+
+也可以从 Kaggle 官方页面手动下载：
 
 ```text
 https://www.kaggle.com/competitions/demand-forecasting-kernels-only/data

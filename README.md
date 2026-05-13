@@ -33,6 +33,7 @@ retail_inventory_forecasting/
   reports/                 # 代码审计和实验说明
   src/retail_inventory/    # 数据、特征、模型、库存仿真和评价代码
   requirements.txt         # Python 依赖
+  requirements-data.txt    # 可选 Kaggle 下载依赖
 ```
 
 ## 环境配置
@@ -108,7 +109,14 @@ gh release download v1.0-course-submission \
 unzip -o m5_raw_data.zip -d data/raw/m5
 ```
 
-Store Item Demand Forecasting Challenge 数据需要从 Kaggle 官方页面下载，然后放入 `data/raw/store_item/`：
+Store Item Demand Forecasting Challenge 数据需要从 Kaggle 官方页面下载。若本机已经配置 Kaggle API 凭据，并且账号已经接受该竞赛规则，可以直接运行：
+
+```bash
+pip install -r requirements-data.txt
+python experiments/download_store_item.py
+```
+
+也可以从 Kaggle 页面手动下载，然后放入 `data/raw/store_item/`：
 
 ```text
 https://www.kaggle.com/competitions/demand-forecasting-kernels-only/data
@@ -140,6 +148,7 @@ python experiments/run_m5_full.py --config configs/default.yaml --n-series 10
 python experiments/run_layer1_synthetic.py --config configs/default.yaml
 python experiments/download_m5.py
 python experiments/run_m5_full.py --config configs/default.yaml --n-series 1000
+python experiments/download_store_item.py
 python experiments/run_store_item_full.py --config configs/default.yaml --output-prefix store_item_full
 python experiments/run_ablation.py --dataset m5 --n-series 1000
 python experiments/run_sensitivity.py --dataset m5 --n-series 1000
