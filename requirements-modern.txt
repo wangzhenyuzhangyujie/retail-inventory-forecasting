@@ -1,0 +1,14 @@
+# Compatibility environment for recent Python versions.
+# This is useful for smoke tests on Python 3.10+ / 3.12, but it is not the
+# exact environment used for the report tables. For strict reproduction use
+# requirements.txt with Python 3.7.x.
+numpy>=1.21
+pandas>=1.1
+scipy>=1.7
+scikit-learn>=0.19
+PyYAML>=5.0
+packaging>=21
+matplotlib>=3.3
+seaborn>=0.11
+torch>=1.13
+lightgbm>=3.3

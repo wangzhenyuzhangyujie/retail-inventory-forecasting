@@ -30,14 +30,24 @@ retail_inventory_forecasting/
   data/                    # 数据准备说明；原始大数据不进入 git
   experiments/             # 可直接运行的实验入口
   outputs/                 # 报告使用的结果表和图片
-  reports/                 # 报告草稿、代码审计和实验说明
+  reports/                 # 代码审计和实验说明
   src/retail_inventory/    # 数据、特征、模型、库存仿真和评价代码
   requirements.txt         # Python 依赖
 ```
 
 ## 环境配置
 
-报告中的结果是在 Python 3.7 环境下得到的。更高版本的 Python 3.x 通常也能运行，不过如果只是为了复现课程报告，建议优先使用下面这套依赖配置。
+报告中的表格是在 Python 3.7 参考环境下得到的。由于实验里同时使用 LightGBM 分位数回归和 PyTorch 校准层，Python、LightGBM、PyTorch 版本变化会带来数值漂移；Python 3.12 环境通常可以跑通脚本，但不能保证和报告逐项一致。
+
+严格复现报告数值时，建议直接使用仓库给出的锁定环境：
+
+```bash
+conda env create -f environment.yml
+conda activate retail-inventory-course
+python experiments/check_environment.py --strict
+```
+
+也可以手动创建 Python 3.7 环境后安装锁定依赖：
 
 ```bash
 python -m venv .venv
@@ -45,14 +55,22 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+如果只想在较新的 Python 环境下做 smoke test，可以改用 `requirements-modern.txt`，但这不是报告结果的严格复现环境。
+
 安装后可以先做一次依赖导入检查：
 
 ```bash
 python - <<'PY'
-import numpy, pandas, scipy, sklearn, statsmodels, yaml
-import matplotlib, seaborn, torch, lightgbm, xgboost
+import numpy, pandas, scipy, sklearn, yaml, packaging
+import matplotlib, seaborn, torch, lightgbm
 print("imports_ok")
 PY
+```
+
+仓库自带的报告结果表可以用下面的命令核验：
+
+```bash
+python experiments/check_report_outputs.py
 ```
 
 ## 数据准备
@@ -138,7 +156,7 @@ outputs/figures/
 
 ## 报告主要结果
 
-课程报告里引用的结果文件已经放在 `outputs/` 目录下，可以直接查看；如果需要核验，也可以按上面的命令重新运行。
+课程报告里引用的结果文件已经放在 `outputs/` 目录下，可以直接查看。若要重跑并逐项比对，请先确认 `python experiments/check_environment.py --strict` 通过；在 Python 3.12、LightGBM 4.x 或 PyTorch 2.x 下重跑，M5 主结论通常仍接近，但合成实验、消融和敏感性分析可能出现明显漂移。
 
 | 数据集 | 固定分位数基线成本 | 提出方法成本 | 总库存成本相对下降 |
 |---|---:|---:|---:|
